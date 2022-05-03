@@ -4,3 +4,5 @@ config.json
 # Test command files
 ping.js
 user.js
+commands/template.txt
+ranksTemplate.json
