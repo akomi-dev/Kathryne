@@ -1,4 +1,4 @@
-const { TOKEN } = require("./config.json");
+const { TOKEN } = require("./assets/config.json");
 
 const fs = require('node:fs');
 const { Client, Collection, Intents } = require('discord.js');
@@ -8,11 +8,11 @@ client.on("ready", () => console.log(`\n${client.user.tag} has been logged in.\n
 
 //#region Slash Commands
 client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands')
+const commandFiles = fs.readdirSync('./assets/commands')
                        .filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
+	const command = require(`./assets/commands/${file}`);
 	client.commands.set(command.data.name, command);
 }
 
@@ -32,7 +32,7 @@ client.on('interactionCreate', async interaction => {
                 content: 'There was an error while executing this command!', ephemeral: true 
             }
         );
-	}
+	};
 });
 //#endregion
 
@@ -42,28 +42,31 @@ client.on("messageCreate", (msg) => {
 	
 	const guildId = msg.guild.id;
 	const authorId = msg.author.id;
+	const ranksJSON = "./assets/ranks.json";
+	const write = (file, obj) => fs.writeFile(
+		file, JSON.stringify(obj), err => { if (err) throw err; }
+	);
 
-	let ranks = require("./ranks.json");
+	let ranks = require(ranksJSON);
 
 	if (!ranks[guildId]) {
 		const temp = {[guildId]: {}};
-		fs.writeFile("./ranks.json", JSON.stringify(temp), err => { if (err) throw err; });
+		write(ranksJSON, temp);
 	} else {
 		if (!ranks[guildId][authorId]) {
-			ranks = require("./ranks.json");
+			ranks = require(ranksJSON);
 			const temp = {[guildId]: {[authorId]: {rank: 0, rankEXP: 0, coins: 0, items: []}}};
-			fs.writeFile("./ranks.json", JSON.stringify(temp), err => { if (err) throw err; });
+			write(ranksJSON, temp);
 		}
 		else if (ranks[guildId][authorId]) {
-			const randXpAmt = () => Math.floor(Math.random()*10)+1;
-			ranks[guildId][authorId]["rankEXP"] += randXpAmt();
+			ranks[guildId][authorId]["rankEXP"] += Math.floor(Math.random()*10)+1;
 		
 			if (ranks[guildId][authorId]["rankEXP"] >= (ranks[guildId][authorId]["rank"]+1)**2) {
 				ranks[guildId][authorId]["rankEXP"] = 0;
 				ranks[guildId][authorId]["rank"] += 1;
 				ranks[guildId][authorId]["coins"] += 100;
 			};
-			fs.writeFile("./ranks.json", JSON.stringify(ranks), err => { if (err) throw err; });
+			write(ranksJSON, ranks);
 		};
 	};
 });
