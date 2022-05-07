@@ -6,3 +6,5 @@ ping.js
 user.js
 commands/template.txt
 ranksTemplate.json
+package-lock.json
+assets/commands/test.js

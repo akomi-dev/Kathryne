@@ -5,6 +5,8 @@ module.exports = {
 		.setName('rewards')
 		.setDescription('Retrieve your guild rank rewards'),
 	async execute(interaction) {
-		await interaction.reply('REWARDS!');
+		const ranks = require("../ranks.json")
+		const userRank = ranks[interaction.member.user.id]["rank"]
+		await interaction.reply(`Your ranks is ${userRank}`);
 	},
 };
