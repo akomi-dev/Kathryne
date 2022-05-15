@@ -9,8 +9,8 @@ client.on("ready", () => {
 	deployCommands;
 	client.user.setPresence({
 		activities: [{
-			name: "for Wishes! | /wish",
-			type: "WATCHING"
+			type: "WATCHING",
+			name: "for Wishes! | /wish"
 		}],
 		status: "online"
 	});
@@ -38,12 +38,10 @@ client.on('interactionCreate', async interaction => {
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
-		await interaction.reply(
-            { 
-                content: 'There was an error while executing this command!', 
-				ephemeral: true 
-            }
-        );
+		await interaction.reply({ 
+            content: 'There was an error while executing this command!', 
+			ephemeral: true 
+        });
 	};
 });
 //#endregion

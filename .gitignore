@@ -1,10 +1,5 @@
 node_modules
-config.json
-
-# Test command files
-ping.js
-user.js
-commands/template.txt
-ranksTemplate.json
 package-lock.json
-assets/commands/test.js
+
+# Client Id and Discord API Token
+config.json
