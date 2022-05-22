@@ -3,3 +3,4 @@ package-lock.json
 
 # Client Id and Discord API Token
 config.json
+test.js
