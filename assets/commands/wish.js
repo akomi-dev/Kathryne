@@ -36,20 +36,30 @@ module.exports = {
 			{
 				const weapons = genshindb.weapons('names', { matchCategories: true });
 				const randIndexWeapons = randNum(weapons.length);
-				ranks[authorId]["items"].push(item = weapons[randIndexWeapons]);
-				temp = genshindb.weapons(item);
-				image = temp.images.image;
+				temp = genshindb.weapons(item = weapons[randIndexWeapons]);
+				if (!ranks[authorId]["items"]["weapons"][item]) {
+					ranks[authorId]["items"]["weapons"][item] = 1;
+				} else {
+					ranks[authorId]["items"]["weapons"][item] += 1;
+				};
+				image = temp.images.image || temp.images.cover1 || temp.images.cover2;
 				rarity = temp.rarity;
-			}
+				break;
+			};
 			case 1: 
 			{
 				const characters = genshindb.characters('names', { matchCategories: true });
 				const randIndexCharacters = randNum(characters.length);
-				ranks[authorId]["items"].push(item = characters[randIndexCharacters]);
-				temp = genshindb.characters(item);
-				image = temp.images.icon;
+				temp = genshindb.characters(item = characters[randIndexCharacters]);
+				if (!ranks[authorId]["items"]["characters"][item]) {
+					ranks[authorId]["items"]["characters"][item] = 1;
+				} else {
+					ranks[authorId]["items"]["characters"][item] += 1;
+				}
+				image = temp.images.icon || temp.images.image || temp.images.awakenicon;
 				rarity = temp.rarity;
-			}
+				break;
+			};
 		};
 
 		write(ranksJSON, ranks);

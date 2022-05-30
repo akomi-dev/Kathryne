@@ -15,7 +15,7 @@ function deploy() {
 	
 	const rest = new REST({ version: '9' }).setToken(TOKEN);
 	
-	guilds["guilds"].forEach((x) => {
+	guilds.forEach((x) => {
 		rest.put(Routes.applicationGuildCommands(clientId, x), { body: commands })
 			.then(() => console.log('Successfully registered application commands.'))
 			.catch(console.error);

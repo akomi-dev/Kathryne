@@ -50,36 +50,27 @@ client.on('interactionCreate', async interaction => {
 client.on("messageCreate", (msg) => {
 	if (msg.author.bot) return; 
 
-	const authorId = msg.author.id;
-	const ranksJSON = "./assets/ranks.json";
 	const write = (file, obj) => fs.writeFile(
 		file, JSON.stringify(obj), err => { if (err) throw err; }
 	);
-		
-	// append guild Id to JSON
-	const guilds = require('./assets/guilds.json')
-	const guildId = msg.guild.id;
 	
-	if (!guilds["guilds"][guildId]){
-		guilds["guilds"].push(guildId)
-		write("./assets/guilds.json", guilds)
-	}
-
+	const ranksJSON = "./assets/ranks.json";
+	const authorId = msg.author.id;
+		
 	let ranks = require(ranksJSON);
 
-	if (ranks[authorId]) {
-		ranks[authorId]["rankEXP"] += Math.floor(Math.random()*10)+1;
+	if (!ranks[authorId]) {
+		ranks[authorId] = {rank: 0, rankEXP: 0, coins: 0, items: {characters:{}, weapons: {}}}
+	} 
 
-		if (ranks[authorId]["rankEXP"] >= (ranks[authorId]["rank"]+1)**2) {
-			ranks[authorId]["rankEXP"] = 0;
-			ranks[authorId]["rank"] += 1;
-			ranks[authorId]["coins"] += 100;
-		};
-		write(ranksJSON, ranks);
-	} else {
-		const temp = {[authorId]: {rank: 0, rankEXP: 0, coins: 0, items: []}};
-		write(ranksJSON, temp);
+	ranks[authorId]["rankEXP"] += Math.floor(Math.random()*10)+1;
+
+	if (ranks[authorId]["rankEXP"] >= (ranks[authorId]["rank"]+1)**2) {
+		ranks[authorId]["rankEXP"] = 0;
+		ranks[authorId]["rank"] += 1;
+		ranks[authorId]["coins"] += 100;
 	};
+	write(ranksJSON, ranks);
 });
 //#endregion
 
