@@ -19,7 +19,7 @@ npm install
 
 Add your guild (server) id to publicConfig.json:
 
-```json
+``` 
 {
     ...
     "guildId": ""
